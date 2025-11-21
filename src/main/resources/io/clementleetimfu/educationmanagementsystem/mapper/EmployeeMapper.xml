@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.clementleetimfu.educationmanagementsystem.mapper.EmployeeMapper">
+
+    <select id="query" resultMap="queryResultMap">
+        select e.*, d.name
+        from employee e
+        left join department d
+        on e.dept_id = d.id
+        <where>
+            e.is_deleted = 0
+            and d.is_deleted = 0
+            <if test="name != null and name != ''">
+                and name like concat('%', #{name},'%')
+            </if>
+            <if test="gender != null">
+                and gender = #{gender}
+            </if>
+            <if test="startDate != null and endDate != null">
+                and hire_date between #{startDate} and #{endDate}
+            </if>
+            order by e.update_time desc
+        </where>
+    </select>
+
+    <resultMap id="queryResultMap"
+               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeQueryResponseDTO">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="name" column="name"/>
+        <result property="gender" column="gender"/>
+        <result property="image" column="image"/>
+        <result property="jobPosition" column="job_position"/>
+        <result property="salary" column="salary"/>
+        <result property="hireDate" column="hire_date"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="deptName" column="name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO employee
+        ( image, username, name, gender, job_position, hire_date, dept_id,
+            phone, salary, create_time, update_time, is_deleted
+        )
+        VALUES
+        ( #{image}, #{username}, #{name}, #{gender}, #{jobPosition}, #{hireDate}, #{deptId},
+            #{phone}, #{salary}, #{createTime}, #{updateTime}, #{isDeleted}
+        )
+    </insert>
+</mapper>
