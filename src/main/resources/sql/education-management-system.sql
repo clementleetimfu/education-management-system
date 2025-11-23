@@ -126,14 +126,14 @@ VALUES ('johnsmith', '123456', 'John Smith', 1, '13309090001', 4, 15000, '5.png'
 CREATE TABLE work_experience
 (
     id           INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'ID, primary key',
-    emp_id       INT UNSIGNED COMMENT 'Employee ID',
-    start_date   DATE COMMENT 'Start date',
-    end_date     DATE COMMENT 'End date',
-    company_name VARCHAR(50) COMMENT 'Company name',
-    job_title    VARCHAR(50) COMMENT 'Position / Job title',
-    create_time  DATETIME   NOT NULL COMMENT 'Creation Time',
-    update_time  DATETIME   NOT NULL COMMENT 'Update Time',
-    is_deleted   TINYINT(1) NOT NULL CHECK (is_deleted IN (0, 1)) COMMENT 'Soft delete flag, 0: active, 1: deleted',
+    emp_id       INT UNSIGNED NOT NULL COMMENT 'Employee ID',
+    start_date   DATE         NOT NULL COMMENT 'Start date',
+    end_date     DATE         NOT NULL COMMENT 'End date',
+    company_name VARCHAR(50)  NOT NULL COMMENT 'Company name',
+    job_title    VARCHAR(50)  NOT NULL COMMENT 'Position / Job title',
+    create_time  DATETIME     NOT NULL COMMENT 'Creation Time',
+    update_time  DATETIME     NOT NULL COMMENT 'Update Time',
+    is_deleted   TINYINT(1)   NOT NULL CHECK (is_deleted IN (0, 1)) COMMENT 'Soft delete flag, 0: active, 1: deleted',
 
     INDEX idx_emp_id (emp_id),
     INDEX idx_start_date (start_date),
@@ -148,14 +148,26 @@ CREATE TABLE work_experience
 -- Activity Log
 CREATE TABLE activity_log
 (
-    id           INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'ID, Primary Key',
-    operate_time DATETIME      NOT NULL COMMENT 'Operation Time',
-    info         VARCHAR(2000) NOT NULL COMMENT 'Log Information',
-    create_time  DATETIME      NOT NULL COMMENT 'Creation Time',
-    update_time  DATETIME      NOT NULL COMMENT 'Update Time',
-    is_deleted   TINYINT(1)    NOT NULL CHECK (is_deleted IN (0, 1)) COMMENT 'Soft delete flag, 0: active, 1: deleted',
+    id             INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'ID, Primary Key',
+    operate_emp_id INT UNSIGNED    NOT NULL COMMENT 'Operator Employee ID',
+    operate_time   DATETIME        NOT NULL COMMENT 'Operation Time',
+    class_name     VARCHAR(255)    NOT NULL COMMENT 'Class Name',
+    method_name    VARCHAR(255)    NOT NULL COMMENT 'Method Name',
+    method_params  TEXT COMMENT 'Method Parameters (serialized)',
+    return_value   TEXT COMMENT 'Method Return Value (serialized)',
+    duration       BIGINT UNSIGNED NOT NULL COMMENT 'Execution Duration in ms',
+    create_time    DATETIME        NOT NULL COMMENT 'Creation Time',
+    update_time    DATETIME        NOT NULL COMMENT 'Update Time',
+    is_deleted     TINYINT(1)      NOT NULL CHECK (is_deleted IN (0, 1)) COMMENT 'Soft delete flag, 0: active, 1: deleted',
+
+    INDEX idx_operate_emp_id (operate_emp_id),
     INDEX idx_operate_time (operate_time),
+    INDEX idx_class_name (class_name),
+    INDEX idx_method_name (method_name),
+    FULLTEXT INDEX idx_method_params_fulltext (method_params),
+    FULLTEXT INDEX idx_return_value_fulltext (return_value),
+    INDEX idx_duration (duration),
     INDEX idx_create_time (create_time),
     INDEX idx_update_time (update_time),
     INDEX idx_is_deleted (is_deleted)
-) COMMENT = 'Activity Log';
+) COMMENT ='Activity Log';

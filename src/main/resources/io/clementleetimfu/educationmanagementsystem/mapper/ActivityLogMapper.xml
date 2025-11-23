@@ -6,15 +6,25 @@
 
     <insert id="addActivityLog">
         INSERT INTO activity_log (
+        operate_emp_id,
         operate_time,
-        info,
+        class_name,
+        method_name,
+        method_params,
+        return_value,
+        duration,
         create_time,
         update_time,
         is_deleted
         )
         VALUES (
+        #{operateEmpId},
         #{operateTime},
-        #{info},
+        #{className},
+        #{methodName},
+        #{methodParams},
+        #{returnValue},
+        #{duration},
         #{createTime},
         #{updateTime},
         #{isDeleted}

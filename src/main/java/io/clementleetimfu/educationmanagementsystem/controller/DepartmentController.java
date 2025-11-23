@@ -1,5 +1,6 @@
 package io.clementleetimfu.educationmanagementsystem.controller;
 
+import io.clementleetimfu.educationmanagementsystem.annotation.AddActivityLog;
 import io.clementleetimfu.educationmanagementsystem.pojo.Result;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentAddDTO;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentFindByIdDTO;
@@ -23,11 +24,13 @@ public class DepartmentController {
         return Result.success(departmentService.findAllDepartment());
     }
 
+    @AddActivityLog
     @DeleteMapping("/{id}")
     public Result<Boolean> deleteDepartmentById(@PathVariable("id") Integer id) {
         return Result.success(departmentService.deleteDepartmentById(id));
     }
 
+    @AddActivityLog
     @PostMapping
     public Result<Boolean> addDepartment(@RequestBody DepartmentAddDTO departmentAddDTO) {
         return Result.success(departmentService.addDepartment(departmentAddDTO));
@@ -38,6 +41,7 @@ public class DepartmentController {
         return Result.success(departmentService.findDepartmentById(id));
     }
 
+    @AddActivityLog
     @PutMapping
     public Result<Boolean> updateDepartment(@RequestBody DepartmentUpdateDTO departmentUpdateDTO) {
         return Result.success(departmentService.updateDepartment(departmentUpdateDTO));

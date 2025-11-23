@@ -1,5 +1,6 @@
 package io.clementleetimfu.educationmanagementsystem.controller;
 
+import io.clementleetimfu.educationmanagementsystem.annotation.AddActivityLog;
 import io.clementleetimfu.educationmanagementsystem.pojo.PageResult;
 import io.clementleetimfu.educationmanagementsystem.pojo.Result;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeAddDTO;
@@ -21,6 +22,7 @@ public class EmployeeController {
         return Result.success(employeeService.queryEmployee(employeeQueryRequestDTO));
     }
 
+    @AddActivityLog
     @PostMapping
     public Result<Boolean> addEmployee(@RequestBody EmployeeAddDTO employeeAddDTO) {
         return Result.success(employeeService.addEmployee(employeeAddDTO));
