@@ -16,7 +16,7 @@ public class UploadController {
     private UploadService uploadService;
 
     @PostMapping
-    public Result<String> uploadAvatar(MultipartFile multipartFile) {
-        return Result.success(uploadService.uploadAvatar(multipartFile));
+    public Result<String> uploadAvatar(MultipartFile file) {
+        return Result.success(uploadService.uploadAvatar(file));
     }
 }

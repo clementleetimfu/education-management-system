@@ -55,14 +55,29 @@ public class CloudflareR2Client {
                 .build();
     }
 
-    public String uploadObject(MultipartFile file, String bucketName, String key) {
+    public String uploadObject(MultipartFile file, String key) {
 
+        String bucketName = s3Config.getBucketName();
         String originalFilename = file.getOriginalFilename();
         String ext = "";
         int dotIndex = originalFilename.lastIndexOf('.');
         if (dotIndex > 0) {
-            ext = originalFilename.substring(dotIndex + 1);
+            ext = originalFilename.substring(dotIndex + 1).toLowerCase();
         }
+
+        String contentType;
+        switch (ext) {
+            case "png":
+                contentType = "image/png";
+                break;
+            case "jpg":
+            case "jpeg":
+                contentType = "image/jpeg";
+                break;
+            default:
+                contentType = "application/octet-stream"; // fallback, should never happen
+        }
+        log.info("contentType:{}", contentType);
 
         // e.g. abc/123.jpg
         String objectKey = String.format("%s/%s.%s", key, UUID.randomUUID(), ext);
@@ -72,12 +87,12 @@ public class CloudflareR2Client {
             PutObjectRequest request = PutObjectRequest.builder()
                     .bucket(bucketName)
                     .key(objectKey)
+                    .contentType(contentType)
                     .build();
             RequestBody requestBody = RequestBody.fromInputStream(file.getInputStream(), file.getSize());
 
             s3Client.putObject(request, requestBody);
-            return String.format("%s/%s/%s", s3Config.getEndpoint(), bucketName, objectKey);
-
+            return String.format("%s/%s", s3Config.getPublicUrl(),objectKey);
 
         } catch (S3Exception | IOException e) {
             throw new RuntimeException("Failed to upload object to bucket " + bucketName + ": " + e.getMessage(), e);

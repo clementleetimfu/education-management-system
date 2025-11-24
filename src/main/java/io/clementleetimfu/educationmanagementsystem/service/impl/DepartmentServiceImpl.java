@@ -5,7 +5,7 @@ import io.clementleetimfu.educationmanagementsystem.exception.ErrorCodeEnum;
 import io.clementleetimfu.educationmanagementsystem.mapper.DepartmentMapper;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentAddDTO;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentFindByIdDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentListDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentFindAllDTO;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentUpdateDTO;
 import io.clementleetimfu.educationmanagementsystem.pojo.entity.Department;
 import io.clementleetimfu.educationmanagementsystem.service.DepartmentService;
@@ -28,12 +28,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     private DepartmentMapper departmentMapper;
 
     @Override
-    public List<DepartmentListDTO> findAllDepartment() {
-        List<DepartmentListDTO> departmentListDTOList = departmentMapper.findAllDepartment();
-        if (departmentListDTOList.isEmpty()){
+    public List<DepartmentFindAllDTO> findAllDepartment() {
+        List<DepartmentFindAllDTO> departmentListDTOFindAll = departmentMapper.findAllDepartment();
+        if (departmentListDTOFindAll.isEmpty()){
             throw new BusinessException(ErrorCodeEnum.DEPARTMENT_NOT_FOUND);
         }
-        return departmentListDTOList;
+        return departmentListDTOFindAll;
     }
 
     @Override

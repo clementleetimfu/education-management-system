@@ -1,26 +1,28 @@
 package io.clementleetimfu.educationmanagementsystem.pojo.dto.employee;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeAddDTO {
-    private String image;
+public class EmployeeSearchResponseDTO {
+    private Integer id;
     private String username;
     private String name;
     private Integer gender;
+    private String image;
     private Integer jobTitle;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Integer salary;
     private LocalDate hireDate;
     private Integer deptId;
-    private String phone;
-    private Integer salary;
-    private List<WorkExperienceAddDTO> workExperienceList;
+    private String deptName;
+    private LocalDateTime createTime;
+    private LocalDateTime updateTime;
 }
+

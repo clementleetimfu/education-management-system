@@ -1,13 +1,15 @@
 package io.clementleetimfu.educationmanagementsystem.mapper;
 
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeQueryRequestDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeQueryResponseDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeSearchRequestDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeSearchResponseDTO;
 import io.clementleetimfu.educationmanagementsystem.pojo.entity.Employee;
 
 import java.util.List;
 
 public interface EmployeeMapper {
-    List<EmployeeQueryResponseDTO> queryEmployee(EmployeeQueryRequestDTO employeeQueryRequestDTO);
+    List<EmployeeSearchResponseDTO> searchEmployee(EmployeeSearchRequestDTO employeeSearchRequestDTO);
 
     Integer addEmployee(Employee employee);
+    
+    Integer deleteEmployeeByIds(List<Integer> ids);
 }

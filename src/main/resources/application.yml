@@ -14,9 +14,10 @@ mybatis:
 cloudflare:
   r2:
     bucketName: education-management-system
-    accountId: aaa
-    accessKey: aaa
-    secretKey: aaa
+    accountId:
+    accessKey:
+    secretKey:
+    publicUrl:
 
 logging:
   level:

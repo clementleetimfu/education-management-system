@@ -5,26 +5,25 @@
 <mapper namespace="io.clementleetimfu.educationmanagementsystem.mapper.DepartmentMapper">
 
     <select id="findAllDepartment" resultMap="departmentResultMap">
-        select id, name, create_time, update_time
+        select id, name, update_time
         from department
         where is_deleted = 0
         order by update_time desc
     </select>
 
     <resultMap id="departmentResultMap"
-               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentListDTO">
+               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentFindAllDTO">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
-        <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
-    <delete id="deleteDepartmentById">
+    <update id="deleteDepartmentById">
         update department
         set is_deleted = 1
         where id = #{id}
         and is_deleted = 0
-    </delete>
+    </update>
 
     <insert id="addDepartment">
         INSERT INTO department (name, create_time, update_time, is_deleted)
@@ -32,7 +31,7 @@
     </insert>
 
     <select id="findDepartmentById" resultMap="findByIdResultMap">
-        select id, name, create_time, update_time
+        select id, name
         from department
         where id = #{id}
         and is_deleted = 0
@@ -42,8 +41,6 @@
                type="io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentFindByIdDTO">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
-        <result property="createTime" column="create_time"/>
-        <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <update id="updateDepartment">

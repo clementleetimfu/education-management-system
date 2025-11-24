@@ -4,7 +4,7 @@ import io.clementleetimfu.educationmanagementsystem.annotation.AddActivityLog;
 import io.clementleetimfu.educationmanagementsystem.pojo.Result;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentAddDTO;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentFindByIdDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentListDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentFindAllDTO;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentUpdateDTO;
 import io.clementleetimfu.educationmanagementsystem.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class DepartmentController {
     private DepartmentService departmentService;
 
     @GetMapping
-    public Result<List<DepartmentListDTO>> findAllDepartment() {
+    public Result<List<DepartmentFindAllDTO>> findAllDepartment() {
         return Result.success(departmentService.findAllDepartment());
     }
 

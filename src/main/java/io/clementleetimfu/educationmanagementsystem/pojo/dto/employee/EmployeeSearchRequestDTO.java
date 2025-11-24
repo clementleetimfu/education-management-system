@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeQueryRequestDTO {
+public class EmployeeSearchRequestDTO {
     private Integer page = 1;
     private Integer pageSize = 10;
     private String name;

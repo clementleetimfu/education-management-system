@@ -5,10 +5,7 @@ import com.github.pagehelper.PageHelper;
 import io.clementleetimfu.educationmanagementsystem.mapper.EmployeeMapper;
 import io.clementleetimfu.educationmanagementsystem.mapper.WorkExperienceMapper;
 import io.clementleetimfu.educationmanagementsystem.pojo.PageResult;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeAddDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeQueryRequestDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeQueryResponseDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.WorkExperienceAddDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.*;
 import io.clementleetimfu.educationmanagementsystem.pojo.entity.Employee;
 import io.clementleetimfu.educationmanagementsystem.pojo.entity.WorkExperience;
 import io.clementleetimfu.educationmanagementsystem.service.EmployeeService;
@@ -35,12 +32,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     private WorkExperienceMapper workExperienceMapper;
 
     @Override
-    public PageResult<EmployeeQueryResponseDTO> queryEmployee(EmployeeQueryRequestDTO employeeQueryRequestDTO) {
-        PageHelper.startPage(employeeQueryRequestDTO.getPage(), employeeQueryRequestDTO.getPageSize());
+    public PageResult<EmployeeSearchResponseDTO> searchEmployee(EmployeeSearchRequestDTO employeeSearchRequestDTO) {
 
-        List<EmployeeQueryResponseDTO> employeeQueryResponseDTOList = employeeMapper.queryEmployee(employeeQueryRequestDTO);
+        PageHelper.startPage(employeeSearchRequestDTO.getPage(), employeeSearchRequestDTO.getPageSize());
 
-        Page<EmployeeQueryResponseDTO> page = (Page<EmployeeQueryResponseDTO>) employeeQueryResponseDTOList;
+        List<EmployeeSearchResponseDTO> employeeSearchResponseDTOList = employeeMapper.searchEmployee(employeeSearchRequestDTO);
+
+        Page<EmployeeSearchResponseDTO> page = (Page<EmployeeSearchResponseDTO>) employeeSearchResponseDTOList;
         return new PageResult<>(page.getTotal(), page.getResult());
     }
 
@@ -53,7 +51,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setIsDeleted(false);
         Integer addEmployeeResult = employeeMapper.addEmployee(employee);
 
-        List<WorkExperienceAddDTO> workExperienceAddDTOList = employeeAddDTO.getWorkExperienceAddDTOList();
+        List<WorkExperienceAddDTO> workExperienceAddDTOList = employeeAddDTO.getWorkExperienceList();
         List<WorkExperience> workExperienceList = workExperienceAddDTOList.stream()
                 .map(workExperienceAddDTO -> {
                     WorkExperience workExperience = modelMapper.map(workExperienceAddDTO, WorkExperience.class);
@@ -67,4 +65,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         return addEmployeeResult > 0 && addWorkExperienceResult > 0;
     }
+
+    @Override
+    public Boolean deleteEmployeeByIds(List<Integer> ids) {
+        return employeeMapper.deleteEmployeeByIds(ids) > 0;
+    }
+
+    @Override
+    public EmployeeFindByIdDTO findEmployeeById(Integer id) {
+        return null;
+    }
+
+
 }
