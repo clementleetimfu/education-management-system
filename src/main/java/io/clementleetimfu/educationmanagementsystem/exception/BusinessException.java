@@ -1,5 +1,8 @@
 package io.clementleetimfu.educationmanagementsystem.exception;
 
+import lombok.Getter;
+
+@Getter
 public class BusinessException extends RuntimeException {
 
     private int code;

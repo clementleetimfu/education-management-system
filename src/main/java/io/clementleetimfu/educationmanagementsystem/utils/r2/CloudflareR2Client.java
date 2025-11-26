@@ -60,9 +60,11 @@ public class CloudflareR2Client {
         String bucketName = s3Config.getBucketName();
         String originalFilename = file.getOriginalFilename();
         String ext = "";
-        int dotIndex = originalFilename.lastIndexOf('.');
-        if (dotIndex > 0) {
-            ext = originalFilename.substring(dotIndex + 1).toLowerCase();
+        if (originalFilename != null && originalFilename.contains(".")) {
+            int dotIndex = originalFilename.lastIndexOf('.');
+            if (dotIndex > 0) {
+                ext = originalFilename.substring(dotIndex + 1).toLowerCase();
+            }
         }
 
         String contentType;
@@ -90,7 +92,7 @@ public class CloudflareR2Client {
             RequestBody requestBody = RequestBody.fromInputStream(file.getInputStream(), file.getSize());
 
             s3Client.putObject(request, requestBody);
-            return String.format("%s/%s", s3Config.getPublicUrl(),objectKey);
+            return String.format("%s/%s", s3Config.getPublicUrl(), objectKey);
 
         } catch (S3Exception | IOException e) {
             throw new RuntimeException("Failed to upload object to bucket " + bucketName + ": " + e.getMessage(), e);

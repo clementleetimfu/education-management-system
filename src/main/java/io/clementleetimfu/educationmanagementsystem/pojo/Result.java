@@ -28,8 +28,12 @@ public class Result<T> {
     }
 
     public static Result<Void> fail(String message) {
+        return fail(FAIL_CODE, message);
+    }
+
+    public static Result<Void> fail(Integer code, String message) {
         Result<Void> result = new Result<>();
-        result.setCode(FAIL_CODE);
+        result.setCode(code);
         result.setMessage(message);
         return result;
     }

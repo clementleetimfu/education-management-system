@@ -4,8 +4,8 @@ import io.clementleetimfu.educationmanagementsystem.exception.BusinessException;
 import io.clementleetimfu.educationmanagementsystem.exception.ErrorCodeEnum;
 import io.clementleetimfu.educationmanagementsystem.mapper.DepartmentMapper;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentAddDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentFindByIdDTO;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentFindAllDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentFindByIdDTO;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentUpdateDTO;
 import io.clementleetimfu.educationmanagementsystem.pojo.entity.Department;
 import io.clementleetimfu.educationmanagementsystem.service.DepartmentService;
@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -30,7 +31,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public List<DepartmentFindAllDTO> findAllDepartment() {
         List<DepartmentFindAllDTO> departmentListDTOFindAll = departmentMapper.findAllDepartment();
-        if (departmentListDTOFindAll.isEmpty()){
+        if (departmentListDTOFindAll.isEmpty()) {
+            log.warn("Department list is empty");
             throw new BusinessException(ErrorCodeEnum.DEPARTMENT_NOT_FOUND);
         }
         return departmentListDTOFindAll;
@@ -38,7 +40,13 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Boolean deleteDepartmentById(Integer id) {
-        return departmentMapper.deleteDepartmentById(id) > 0;
+        Integer rowsAffected = departmentMapper.deleteDepartmentById(id);
+        if (rowsAffected == 0) {
+            log.warn("Failed to delete department with id:{}", id);
+            throw new BusinessException(ErrorCodeEnum.DEPARTMENT_DELETE_FAILED);
+        }
+        log.info("Successfully deleted department with id:{}", id);
+        return Boolean.TRUE;
     }
 
     @Override
@@ -47,13 +55,20 @@ public class DepartmentServiceImpl implements DepartmentService {
         department.setCreateTime(LocalDateTime.now());
         department.setUpdateTime(LocalDateTime.now());
         department.setIsDeleted(Boolean.FALSE);
-        return departmentMapper.addDepartment(department) > 0;
+        Integer rowsAffected = departmentMapper.addDepartment(department);
+        if (rowsAffected == 0) {
+            log.warn("Failed to add department:{}", department);
+            throw new BusinessException(ErrorCodeEnum.DEPARTMENT_ADD_FAILED);
+        }
+        log.info("Successfully added department:{}", department);
+        return Boolean.TRUE;
     }
 
     @Override
     public DepartmentFindByIdDTO findDepartmentById(Integer id) {
         DepartmentFindByIdDTO departmentFindByIdDTO = departmentMapper.findDepartmentById(id);
         if (departmentFindByIdDTO == null) {
+            log.warn("Department with id:{} not found", id);
             throw new BusinessException(ErrorCodeEnum.DEPARTMENT_NOT_FOUND);
         }
         return departmentFindByIdDTO;
@@ -63,7 +78,13 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Boolean updateDepartment(DepartmentUpdateDTO departmentUpdateDTO) {
         Department department = modelMapper.map(departmentUpdateDTO, Department.class);
         department.setUpdateTime(LocalDateTime.now());
-        return departmentMapper.updateDepartment(department) > 0;
+        Integer rowsAffected = departmentMapper.updateDepartment(department);
+        if (rowsAffected == 0) {
+            log.warn("Failed to update department:{}", department);
+            throw new BusinessException(ErrorCodeEnum.DEPARTMENT_UPDATE_FAILED);
+        }
+        log.info("Successfully updated department:{}", department);
+        return Boolean.TRUE;
     }
 
 }
