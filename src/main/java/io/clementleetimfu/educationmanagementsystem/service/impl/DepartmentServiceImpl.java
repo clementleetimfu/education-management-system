@@ -5,7 +5,6 @@ import io.clementleetimfu.educationmanagementsystem.exception.ErrorCodeEnum;
 import io.clementleetimfu.educationmanagementsystem.mapper.DepartmentMapper;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentAddDTO;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentFindAllDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentFindByIdDTO;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentUpdateDTO;
 import io.clementleetimfu.educationmanagementsystem.pojo.entity.Department;
 import io.clementleetimfu.educationmanagementsystem.service.DepartmentService;
@@ -59,16 +58,6 @@ public class DepartmentServiceImpl implements DepartmentService {
             throw new BusinessException(ErrorCodeEnum.DEPARTMENT_ADD_FAILED);
         }
         return Boolean.TRUE;
-    }
-
-    @Override
-    public DepartmentFindByIdDTO findDepartmentById(Integer id) {
-        DepartmentFindByIdDTO departmentFindByIdDTO = departmentMapper.selectDepartmentById(id);
-        if (departmentFindByIdDTO == null) {
-            log.warn("Department with id:{} not found", id);
-            throw new BusinessException(ErrorCodeEnum.DEPARTMENT_NOT_FOUND);
-        }
-        return departmentFindByIdDTO;
     }
 
     @Override

@@ -47,12 +47,12 @@ public class EmployeeController {
         return Result.success(employeeService.updateEmployee(employeeUpdateDTO));
     }
 
-    @GetMapping("jobTitle/count")
+    @GetMapping("/jobTitle/count")
     public Result<EmployeeJobTitleCountDTO> findEmployeeJobTitleCount() {
         return Result.success(employeeService.findEmployeeJobTitleCount());
     }
 
-    @GetMapping("gender/count")
+    @GetMapping("/gender/count")
     public Result<List<Map<String, Object>>> findEmployeeGenderCount() {
         return Result.success(employeeService.findEmployeeGenderCount());
     }

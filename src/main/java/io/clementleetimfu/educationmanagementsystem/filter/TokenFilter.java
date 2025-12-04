@@ -2,6 +2,7 @@ package io.clementleetimfu.educationmanagementsystem.filter;
 
 import io.clementleetimfu.educationmanagementsystem.utils.jwt.JwtUtil;
 import io.clementleetimfu.educationmanagementsystem.utils.thread.CurrentEmployee;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -53,7 +54,8 @@ public class TokenFilter implements Filter {
                 return;
             }
 
-            CurrentEmployee.set(jwtUtil.parseToken(token));
+            Claims claims = jwtUtil.parseToken(token);
+            CurrentEmployee.set(claims.get("id", Integer.class));
 
             filterChain.doFilter(request, response);
         } finally {

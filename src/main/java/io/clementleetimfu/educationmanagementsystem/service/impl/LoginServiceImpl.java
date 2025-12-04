@@ -11,6 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Slf4j
 @Service
 public class LoginServiceImpl implements LoginService {
@@ -29,7 +32,12 @@ public class LoginServiceImpl implements LoginService {
             log.warn("User with username:{} not found", loginRequestDTO.getUsername());
             throw new BusinessException(ErrorCodeEnum.INVALID_CREDENTIALS);
         }
-        loginResponseDTO.setToken(jwtUtil.generateToken(loginResponseDTO.getId()));
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", loginResponseDTO.getId());
+        claims.put("username", loginRequestDTO.getUsername());
+
+        loginResponseDTO.setToken(jwtUtil.generateToken(claims));
         return loginResponseDTO;
     }
 

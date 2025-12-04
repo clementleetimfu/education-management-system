@@ -134,8 +134,7 @@
     <select id="selectEmployeeByUsernameAndPassWord"
             resultType="io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.LoginResponseDTO">
         SELECT id,
-        username,
-        name
+        username
         FROM employee
         WHERE is_deleted = 0
         AND username = #{username}

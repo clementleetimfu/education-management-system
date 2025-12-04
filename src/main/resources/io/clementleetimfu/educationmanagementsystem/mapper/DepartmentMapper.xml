@@ -30,19 +30,6 @@
         VALUES (#{name}, #{createTime}, #{updateTime}, #{isDeleted})
     </insert>
 
-    <select id="selectDepartmentById" resultMap="selectDepartmentByIdResultMap">
-        select id, name
-        from department
-        where id = #{id}
-        and is_deleted = 0
-    </select>
-
-    <resultMap id="selectDepartmentByIdResultMap"
-               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentFindByIdDTO">
-        <id property="id" column="id"/>
-        <result property="name" column="name"/>
-    </resultMap>
-
     <update id="updateDepartmentName">
         UPDATE department
         set name = #{name}, update_time = #{updateTime}

@@ -1,5 +1,6 @@
 package io.clementleetimfu.educationmanagementsystem.utils.jwt;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -22,25 +24,23 @@ public class JwtUtil {
         this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
     }
 
-    public String generateToken(Integer employeeId) {
+    public String generateToken(Map<String, Object> claims) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + EXPIRATION_MS);
         return Jwts.builder()
                 .issuedAt(now)
                 .expiration(expiryDate)
-                .subject(String.valueOf(employeeId))
+                .claims(claims)
                 .signWith(key)
                 .compact();
     }
 
-    public Integer parseToken(String token) {
-        String subject = Jwts.parser()
+    public Claims parseToken(String token) {
+        return Jwts.parser()
                 .verifyWith(key)
                 .build()
                 .parseSignedClaims(token)
-                .getPayload()
-                .getSubject();
-        return Integer.parseInt(subject);
+                .getPayload();
     }
 
     public boolean validateToken(String token) {
